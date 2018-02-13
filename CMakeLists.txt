@@ -212,7 +212,7 @@ except ImportError:
         install_py(3)
     endif()
 else()
-    set(SETUP_OPTS "${SETUP_OPTS} --record=rekord.txt --prefix=${CMAKE_INSTALL_PREFIX}")
+    set(SETUP_OPTS "${SETUP_OPTS} --single-version-externally-managed  --record=rekord.txt --prefix=${CMAKE_INSTALL_PREFIX}")
     string(REPLACE "/" "\\\\" SETUP_OPTS ${SETUP_OPTS})
     macro(install_win_py ver)
         message(">>> ${PYTHON${ver}_EXECUTABLE} setup.py install ${SETUP_OPTS}")
