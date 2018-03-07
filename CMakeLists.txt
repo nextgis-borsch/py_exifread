@@ -3,7 +3,7 @@
 # Purpose:  CMake build scripts
 # Author:   Dmitry Baryshnikov, dmitry.baryshnikov@nexgis.com
 ################################################################################
-# Copyright (C) 2017, NextGIS <info@nextgis.com>
+# Copyright (C) 2017-2018, NextGIS <info@nextgis.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -38,11 +38,11 @@ if(OSX_FRAMEWORK AND (BUILD_SHARED_LIBS OR BUILD_STATIC_LIBS))
 endif()
 
 if(OSX_FRAMEWORK)
-  set(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/Library" CACHE INTERNAL "Installation directory for libraries" FORCE)
+  set(INSTALL_LIB_DIR "Library" CACHE INTERNAL "Installation directory for libraries" FORCE)
   set(CMAKE_MACOSX_RPATH ON)
 else()
     include(GNUInstallDirs)
-    set(INSTALL_LIB_DIR ${CMAKE_INSTALL_FULL_LIBDIR} CACHE INTERNAL "Installation directory for libraries" FORCE)
+    set(INSTALL_LIB_DIR "." CACHE INTERNAL "Installation directory for libraries" FORCE)
 endif()
 
 if(NOT WITH_PYTHON2 AND NOT WITH_PYTHON3)
@@ -143,7 +143,7 @@ endif()
 
 if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL )
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(SETUP_OPTS "${SETUP_OPTS} --single-version-externally-managed --record=rekord.txt --prefix=${CMAKE_INSTALL_PREFIX}")
+    set(SETUP_OPTS "${SETUP_OPTS} --no-compile --single-version-externally-managed --record=rekord.txt --prefix=${CMAKE_INSTALL_PREFIX}")
 
     macro(install_mac_py ver)
         install(CODE "execute_process(
@@ -174,7 +174,7 @@ except ImportError:
         set(SETUP_OPTS)
 
         if(PY_HAVE_SETUPTOOLS)
-            set(SETUP_OPTS "${SETUP_OPTS} --single-version-externally-managed --record=rekord.txt")
+            set(SETUP_OPTS "${SETUP_OPTS} --no-compile --single-version-externally-managed --record=rekord.txt")
         endif()
 
         string( LENGTH "$ENV{DESTDIR}" DESTDIRLEN )
@@ -212,7 +212,7 @@ except ImportError:
         install_py(3)
     endif()
 else()
-    set(SETUP_OPTS "${SETUP_OPTS} --single-version-externally-managed  --record=rekord.txt --prefix=${CMAKE_INSTALL_PREFIX}")
+    set(SETUP_OPTS "${SETUP_OPTS} --no-compile --single-version-externally-managed  --record=rekord.txt --prefix=${CMAKE_INSTALL_PREFIX}")
     string(REPLACE "/" "\\\\" SETUP_OPTS ${SETUP_OPTS})
     macro(install_win_py ver)
         message(">>> ${PYTHON${ver}_EXECUTABLE} setup.py install ${SETUP_OPTS}")
